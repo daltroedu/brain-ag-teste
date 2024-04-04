@@ -1,5 +1,5 @@
 import pytest
-from agro.models import Farmer, Farm
+from agro.models import Farmer, Farm, CropType
 
 @pytest.fixture
 def create_farmers(db):
@@ -33,6 +33,14 @@ def create_farms(db, create_farmers):
         ),
     ]
     return farms
+
+@pytest.fixture
+def create_crop_types(db):
+    crop_types = [
+        CropType.objects.create(name='Soja'),
+        CropType.objects.create(name='Milho'),
+    ]
+    return crop_types
 
 @pytest.fixture
 def fake_id():
