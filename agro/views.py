@@ -15,3 +15,9 @@ class FarmerViewSet(viewsets.ModelViewSet):
     queryset = Farmer.objects.all()
     serializer_class = FarmerSerializer
     pagination_class = StandardResultsSetPagination
+
+
+class FarmViewSet(viewsets.ModelViewSet):
+    queryset = Farm.objects.select_related('farmer').all()
+    serializer_class = FarmSerializer
+    pagination_class = StandardResultsSetPagination
