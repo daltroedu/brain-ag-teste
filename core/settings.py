@@ -123,3 +123,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK_PAGINATION = {
+    'DEFAULT_PAGE_SIZE': 10,
+    'DEFAULT_PAGE_QUERY_PARAM': 'page',
+    'MAX_PAGE_SIZE': 100,
+}
