@@ -144,9 +144,6 @@ def test_farm_create_without_name(client, create_farmers):
 # Edge/corner/boundary cases
 @pytest.mark.django_db
 def test_farm_create_with_zero_total_area(client, create_farmers):
-    """
-    Case: total_area_hectares = 0
-    """
     farmer = create_farmers[0]
     url = reverse('farm-list')
     data = {
@@ -163,9 +160,6 @@ def test_farm_create_with_zero_total_area(client, create_farmers):
 
 @pytest.mark.django_db
 def test_farm_create_with_negative_area_values(client, create_farmers):
-    """
-    Case: negative values
-    """
     farmer = create_farmers[0]
     url = reverse('farm-list')
     data = {
@@ -182,9 +176,6 @@ def test_farm_create_with_negative_area_values(client, create_farmers):
 
 @pytest.mark.django_db
 def test_farm_update_exceeding_total_area(client, create_farms):
-    """
-    Case: updating farm so that sum of areas exceeds total area
-    """
     farm = create_farms[0]
     url = reverse('farm-detail', kwargs={'pk': farm.pk})
     data = {
@@ -200,9 +191,6 @@ def test_farm_update_exceeding_total_area(client, create_farms):
 
 @pytest.mark.django_db
 def test_farm_update_with_invalid_state(client, create_farms):
-    """
-    Case: updating farm with an invalid state value in STATE_CHOICES/Brazil
-    """
     farm = create_farms[0]
     url = reverse('farm-detail', kwargs={'pk': farm.pk})
     data = {
