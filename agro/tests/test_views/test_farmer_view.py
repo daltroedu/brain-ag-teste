@@ -7,10 +7,11 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
 )
-from .conftest import create_farmers
+from .conftest import create_farmers, fake_id
 from agro.models import Farmer
 
 
+# Positve cases
 @pytest.mark.django_db
 def test_farmer_list(client, create_farmers):
     url = reverse('farmer-list')
@@ -53,24 +54,22 @@ def test_farmer_retrieve(client, create_farmers):
     assert response.data['name'] == farmer.name
     assert response.data['cpf_cnpj'] == farmer.cpf_cnpj
 
+# Negative cases
 @pytest.mark.django_db
 def test_retrieve_nonexistent_farmer(client):
-    non_existent_id = 99999
-    url = reverse('farmer-detail', kwargs={'pk': non_existent_id})
+    url = reverse('farmer-detail', kwargs={'pk': fake_id})
     response = client.get(url)
     assert response.status_code == HTTP_404_NOT_FOUND
 
 @pytest.mark.django_db
 def test_delete_nonexistent_farmer(client):
-    non_existent_id = 99999
-    url = reverse('farmer-detail', kwargs={'pk': non_existent_id})
+    url = reverse('farmer-detail', kwargs={'pk': fake_id})
     response = client.delete(url)
     assert response.status_code == HTTP_404_NOT_FOUND
 
 @pytest.mark.django_db
 def test_update_nonexistent_farmer(client):
-    non_existent_id = 99999
-    url = reverse('farmer-detail', kwargs={'pk': non_existent_id})
+    url = reverse('farmer-detail', kwargs={'pk': fake_id})
     data = {'name': 'Novo Nome', 'cpf_cnpj': '12345678901'}
     response = client.put(url, data, content_type='application/json')
     assert response.status_code == HTTP_404_NOT_FOUND
@@ -90,6 +89,7 @@ def test_update_farmer_with_invalid_data(client, create_farmers):
     response = client.put(url, invalid_data, content_type='application/json')
     assert response.status_code == HTTP_400_BAD_REQUEST
 
+# Edge/corner/boundary cases
 @pytest.mark.django_db
 def test_create_farmer_with_invalid_cpf_cnpj_format(client):
     url = reverse('farmer-list')
