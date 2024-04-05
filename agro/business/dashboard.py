@@ -10,7 +10,6 @@ def get_dashboard_data():
     count_per_crop = [{'crop_type_name': item['crop_type__name'], 'total': item['total']} for item in count_per_crop]
     total_arable = Farm.objects.aggregate(total=Sum('arable_area_hectares'))['total'] or 0
     total_vegetation = Farm.objects.aggregate(total=Sum('vegetation_area_hectares'))['total'] or 0
-
     dashboard_data = {
         'farm_count': farm_count,
         'total_area_hectares': total_area,
@@ -21,5 +20,4 @@ def get_dashboard_data():
             'total_vegetation_area_hectares': total_vegetation
         }
     }
-
     return dashboard_data
