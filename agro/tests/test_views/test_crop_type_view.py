@@ -7,7 +7,6 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
 )
-from .conftest import create_crop_types, fake_id
 from agro.models import CropType
 
 
