@@ -26,3 +26,9 @@ class FarmViewSet(viewsets.ModelViewSet):
 class CropTypeViewSet(viewsets.ModelViewSet):
     queryset = CropType.objects.all()
     serializer_class = CropTypeSerializer
+
+
+class CropViewSet(viewsets.ModelViewSet):
+    queryset = Crop.objects.select_related('crop_type').prefetch_related('farm').all()
+    serializer_class = CropSerializer
+    pagination_class = StandardResultsSetPagination
