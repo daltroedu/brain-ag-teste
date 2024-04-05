@@ -78,12 +78,7 @@ def test_farm_retrieve(client, create_farms):
 
 # Negative cases
 @pytest.mark.django_db
-def test_farm_create_with_invalid_data(client, create_farmers):
-    """
-    Cases:
-        - XX is a invalid state in STATE_CHOICES/Brazil
-        - arable_area_hectares + vegetation_area_hectares > total_area_hectares
-    """
+def test_farm_create_with_invalid_state_and_total_area_hectares(client, create_farmers):
     farmer = create_farmers[0]
     url = reverse('farm-list')
     data = {

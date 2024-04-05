@@ -85,7 +85,7 @@ def test_create_farmer_with_incomplete_data(client):
 def test_update_farmer_with_invalid_data(client, create_farmers):
     farmer = create_farmers[0]
     url = reverse('farmer-detail', kwargs={'pk': farmer.pk})
-    invalid_data = {'name': 'João', 'cpf_cnpj': 'nulo'}
+    invalid_data = {'name': 'João', 'cpf_cnpj': None}
     response = client.put(url, invalid_data, content_type='application/json')
     assert response.status_code == HTTP_400_BAD_REQUEST
 
@@ -93,7 +93,7 @@ def test_update_farmer_with_invalid_data(client, create_farmers):
 @pytest.mark.django_db
 def test_create_farmer_with_invalid_cpf_cnpj_format(client):
     url = reverse('farmer-list')
-    data = {'name': '!@#$%&*', 'cpf_cnpj': '1234'}
+    data = {'name': 'João', 'cpf_cnpj': '1234'}
     response = client.post(url, data, format='json')
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert 'cpf_cnpj' in response.data
@@ -101,7 +101,7 @@ def test_create_farmer_with_invalid_cpf_cnpj_format(client):
 @pytest.mark.django_db
 def test_create_farmer_without_name(client):
     url = reverse('farmer-list')
-    data = {'cpf_cnpj': '12345678901'}
+    data = {'cpf_cnpj': '53545781089'}
     response = client.post(url, data, format='json')
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert 'name' in response.data
