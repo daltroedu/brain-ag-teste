@@ -1,8 +1,15 @@
+import logging
 from django.conf import settings
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from .models import Farmer, Farm, CropType, Crop
 from .serializers import FarmerSerializer, FarmSerializer, CropTypeSerializer, CropSerializer
+from .business.dashboard import get_dashboard_data
+
+logger = logging.getLogger(__name__)
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -32,3 +39,13 @@ class CropViewSet(viewsets.ModelViewSet):
     queryset = Crop.objects.select_related('crop_type').prefetch_related('farm').all()
     serializer_class = CropSerializer
     pagination_class = StandardResultsSetPagination
+
+
+class DashboardAPIView(APIView):
+    def get(self, request):
+        try:
+            dashboard_data = get_dashboard_data()
+            return Response(dashboard_data)
+        except Exception as e:
+            logger.error(f"Erro ao recuperar dados do dashboard: {e}", exc_info=True)
+            return Response({'error': 'Ocorreu um erro ao processar sua solicitação.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
