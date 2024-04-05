@@ -1,6 +1,7 @@
 import pytest
 from agro.models import Farmer, Farm, CropType
 
+
 @pytest.fixture
 def create_farmers(db):
     farmers = [
