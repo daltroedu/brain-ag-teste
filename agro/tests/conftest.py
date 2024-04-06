@@ -29,7 +29,7 @@ def create_farms(db, create_farmers):
             city='Salinas',
             state='MG',
             total_area_hectares=200,
-            arable_area_hectares=150,
+            arable_area_hectares=100,
             vegetation_area_hectares=50,
         ),
     ]
