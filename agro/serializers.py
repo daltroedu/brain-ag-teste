@@ -15,11 +15,6 @@ class FarmerSerializer(serializers.ModelSerializer):
     def validate_cpf_cnpj(self, value):
         if not validate_cpf_cnpj(value):
             raise serializers.ValidationError("Informe um CPF ou CNPJ válido.")
-        return value
-    
-    def validate_cpf_cnpj(self, value):
-        if not validate_cpf_cnpj(value):
-            raise serializers.ValidationError("Informe um CPF ou CNPJ válido.")
         cpf_cnpj_only_numbers = ''.join(filter(str.isdigit, value))
         return cpf_cnpj_only_numbers
 
