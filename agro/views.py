@@ -19,13 +19,13 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class FarmerViewSet(viewsets.ModelViewSet):
-    queryset = Farmer.objects.all()
+    queryset = Farmer.objects.order_by('-updated_at').all()
     serializer_class = FarmerSerializer
     pagination_class = StandardResultsSetPagination
 
 
 class FarmViewSet(viewsets.ModelViewSet):
-    queryset = Farm.objects.select_related('farmer').all()
+    queryset = Farm.objects.select_related('farmer').order_by('-updated_at').all()
     serializer_class = FarmSerializer
     pagination_class = StandardResultsSetPagination
 
