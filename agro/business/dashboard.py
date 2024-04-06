@@ -1,5 +1,5 @@
 from django.db.models import Sum, Count
-from ..models import Farm, Crop
+from agro.models import Farm, Crop
 
 
 def get_dashboard_data():
