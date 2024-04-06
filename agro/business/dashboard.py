@@ -13,11 +13,11 @@ def get_dashboard_data():
     dashboard_data = {
         'farm_count': farm_count,
         'total_area_hectares': total_area,
-        'count_by_state': count_per_state,
-        'farm_count_by_crop': count_per_crop,
         'soil_usage': {
             'total_arable_area_hectares': total_arable,
             'total_vegetation_area_hectares': total_vegetation
-        }
+        },
+        'farm_count_by_crop': count_per_crop,
+        'count_by_state': count_per_state,
     }
     return dashboard_data
