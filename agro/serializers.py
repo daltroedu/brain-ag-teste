@@ -46,7 +46,7 @@ class FarmSerializer(serializers.ModelSerializer):
 
     def validate_total_area_hectares(self, value):
         if value <= 0:
-            raise serializers.ValidationError("A área total não pode ser negativa.")
+            raise serializers.ValidationError("A área total não pode ser negativa ou zero.")
         return value
 
     def validate_arable_area_hectares(self, value):
