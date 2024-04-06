@@ -47,11 +47,6 @@ class Crop(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        """
-        unique_together evita duplicidade no banco de dados,
-        onde uma mesma fazenda NÃO tenha >1 registros para um mesmo tipo de cultura,
-        exemplo: "Fazenda: Três Corações, cultura: Soja", esta composição aparecerá somente uma vez.
-        """
         unique_together = ('farm', 'crop_type',)
 
     def __str__(self):
