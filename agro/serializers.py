@@ -23,17 +23,24 @@ class FarmerSerializer(serializers.ModelSerializer):
 
 
 class FarmSerializer(serializers.ModelSerializer):
-    farmer_id = serializers.UUIDField(write_only=True, allow_null=False, required=True)
+    farmer = FarmerSerializer(read_only=True)
+    farmer_id = serializers.PrimaryKeyRelatedField(
+        queryset=Farmer.objects.all(), write_only=True, source='farmer'
+    )
 
     class Meta:
         model = Farm
-        fields = ['id', 'farmer_id', 'name', 'city', 'state', 'total_area_hectares', 'arable_area_hectares', 'vegetation_area_hectares']
+        fields = [
+            'id',
+            'farmer',
+            'farmer_id',
+            'name', 'city',
+            'state',
+            'total_area_hectares',
+            'arable_area_hectares',
+            'vegetation_area_hectares',
+        ]
         read_only_fields = ('id',)
-
-    def create(self, validated_data):
-        farmer_id = validated_data.pop('farmer_id', None)
-        farmer = Farmer.objects.get(id=farmer_id)
-        return Farm.objects.create(farmer=farmer, **validated_data)
 
     def validate_state(self, value):
         if value not in dict(STATE_CHOICES).keys():
@@ -76,7 +83,6 @@ class CropSerializer(serializers.ModelSerializer):
     farm_id = serializers.PrimaryKeyRelatedField(
         queryset=Farm.objects.all(), write_only=True, source='farm'
     )
-
     integrity_error_message = "Uma cultura com esta fazenda e tipo de cultura já existe."
 
     class Meta:
