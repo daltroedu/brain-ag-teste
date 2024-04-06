@@ -3,6 +3,7 @@ from rest_framework import serializers
 from localflavor.br.validators import BRCPFValidator, BRCNPJValidator
 from .models import Farmer, Farm, CropType, Crop
 from .constants import STATE_CHOICES
+from .business.validators import validate_total_area
 
 
 class FarmerSerializer(serializers.ModelSerializer):
@@ -63,7 +64,7 @@ class FarmSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
-        if data['arable_area_hectares'] + data['vegetation_area_hectares'] > data['total_area_hectares']:
+        if not validate_total_area(data):
             raise serializers.ValidationError("A soma da área agricultável e de vegetação não pode exceder a área total da fazenda.")
         return data
 
