@@ -1,9 +1,9 @@
 from django.db import IntegrityError
 from rest_framework import serializers
-from localflavor.br.validators import BRCPFValidator, BRCNPJValidator
 from .models import Farmer, Farm, CropType, Crop
 from .constants import STATE_CHOICES
 from .business.validators import validate_total_area
+from .utils import validate_cpf_cnpj
 
 
 class FarmerSerializer(serializers.ModelSerializer):
@@ -13,12 +13,7 @@ class FarmerSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
     def validate_cpf_cnpj(self, value):
-        cpf_cnpj = ''.join(filter(str.isdigit, value))
-        if len(cpf_cnpj) == 11:
-            BRCPFValidator()(cpf_cnpj)
-        elif len(cpf_cnpj) == 14:
-            BRCNPJValidator()(cpf_cnpj)
-        else:
+        if not validate_cpf_cnpj(value):
             raise serializers.ValidationError("Informe um CPF ou CNPJ válido.")
         return value
 
