@@ -1,5 +1,6 @@
 from localflavor.br.validators import BRCPFValidator, BRCNPJValidator
 
+
 def validate_cpf_cnpj(value):
     cpf_cnpj = ''.join(filter(str.isdigit, value))
     try:
