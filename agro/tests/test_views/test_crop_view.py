@@ -15,12 +15,15 @@ from agro.models import Crop
 @pytest.mark.django_db
 def test_crop_list(client, create_farms, create_crop_types):
     farm = create_farms[0]
-    crop_type = create_crop_types[0]
-    Crop.objects.create(farm=farm, crop_type=crop_type)
+    crop_type1 = create_crop_types[0]
+    crop_type2 = create_crop_types[1]
+    Crop.objects.create(farm=farm, crop_type=crop_type1)
+    Crop.objects.create(farm=farm, crop_type=crop_type2)
     url = reverse('crop-list')
     response = client.get(url)
     assert response.status_code == HTTP_200_OK
-    assert len(response.data['results']) == 1
+    assert len(response.data) == 1
+    assert len(response.data[0]['crops']) == 2
 
 @pytest.mark.django_db
 def test_crop_create(client, create_farms, create_crop_types):

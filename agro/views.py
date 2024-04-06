@@ -36,9 +36,23 @@ class CropTypeViewSet(viewsets.ModelViewSet):
 
 
 class CropViewSet(viewsets.ModelViewSet):
-    queryset = Crop.objects.select_related('crop_type').prefetch_related('farm').all()
+    queryset = Crop.objects.select_related('crop_type', 'farm', 'farm__farmer').all()
     serializer_class = CropSerializer
     pagination_class = StandardResultsSetPagination
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        farms = {}
+        for crop in queryset:
+            farm_id = crop.farm.id
+            if farm_id not in farms:
+                farms[farm_id] = {
+                    'farm': FarmSerializer(crop.farm).data,
+                    'crops': []
+                }
+            farms[farm_id]['crops'].append(CropTypeSerializer(crop.crop_type).data)
+        response_data = [value for value in farms.values()]
+        return Response(response_data)
 
 
 class DashboardAPIView(APIView):
