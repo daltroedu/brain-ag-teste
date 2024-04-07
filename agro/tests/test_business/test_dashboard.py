@@ -7,19 +7,20 @@ from agro.constants import STATE_CHOICES
 # Positive cases
 @pytest.mark.django_db
 def test_get_dashboard_data(create_farms, create_crop_types):
-    farm1 = create_farms[0]
-    crop_type1 = create_crop_types[0]
+    farm1, farm2 = create_farms
+    crop_type1, crop_type2 = create_crop_types
     Crop.objects.create(farm=farm1, crop_type=crop_type1)
-    farm2 = create_farms[1]
-    crop_type2 = create_crop_types[1]
     Crop.objects.create(farm=farm2, crop_type=crop_type2)
     dashboard_data = get_dashboard_data()
+    expected_total_area = farm1.total_area_hectares + farm2.total_area_hectares
+    expected_arable_area = farm1.arable_area_hectares + farm2.arable_area_hectares
+    expected_vegetation_area = farm1.vegetation_area_hectares + farm2.vegetation_area_hectares
     assert dashboard_data['farm_count'] == 2
-    assert dashboard_data['total_area_hectares'] == farm1.total_area_hectares + farm2.total_area_hectares
+    assert dashboard_data['total_area_hectares'] == expected_total_area
     assert len(dashboard_data['count_by_state']) == 2
     assert len(dashboard_data['farm_count_by_crop']) == 2
-    assert dashboard_data['soil_usage']['total_arable_area_hectares'] == farm1.arable_area_hectares + farm2.arable_area_hectares
-    assert dashboard_data['soil_usage']['total_vegetation_area_hectares'] == farm1.vegetation_area_hectares + farm2.vegetation_area_hectares
+    assert dashboard_data['soil_usage']['total_arable_area_hectares'] == expected_arable_area
+    assert dashboard_data['soil_usage']['total_vegetation_area_hectares'] == expected_vegetation_area
 
 # Negative cases
 @pytest.mark.django_db
@@ -46,7 +47,7 @@ def test_get_dashboard_data_with_farm_having_no_arable_or_vegetation_area(create
         vegetation_area_hectares=0,
     )
     dashboard_data = get_dashboard_data()
-    assert dashboard_data['total_area_hectares'] >= 100
+    assert dashboard_data['total_area_hectares'] == 100
     assert any(farm['state'] == 'BA' for farm in dashboard_data['count_by_state'])
 
 @pytest.mark.django_db
@@ -62,9 +63,9 @@ def test_get_dashboard_data_with_farm_where_arable_and_vegetation_equal_total(cr
         vegetation_area_hectares=100,
     )
     dashboard_data = get_dashboard_data()
-    assert dashboard_data['total_area_hectares'] >= 200
-    assert dashboard_data['soil_usage']['total_arable_area_hectares'] >= 100
-    assert dashboard_data['soil_usage']['total_vegetation_area_hectares'] >= 100
+    assert dashboard_data['total_area_hectares'] == 200
+    assert dashboard_data['soil_usage']['total_arable_area_hectares'] == 100
+    assert dashboard_data['soil_usage']['total_vegetation_area_hectares'] == 100
 
 @pytest.mark.django_db
 def test_get_dashboard_data_with_farms_in_all_states(create_farmers):
