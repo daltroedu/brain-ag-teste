@@ -5,12 +5,12 @@ from agro.utils import validate_cpf_cnpj
 # Positive cases
 @pytest.mark.parametrize("cpf", ["95181040004", "951.810.400-04"])
 def test_validate_cpf_cnpj_with_valid_cpf(cpf):
-    assert validate_cpf_cnpj(cpf) == True
+    assert validate_cpf_cnpj(cpf)
 
 
 @pytest.mark.parametrize("cnpj", ["77759188000180", "77.759.188/0001-80"])
 def test_validate_cpf_cnpj_with_valid_cnpj(cnpj):
-    assert validate_cpf_cnpj(cnpj) == True
+    assert validate_cpf_cnpj(cnpj)
 
 
 # Negative cases
