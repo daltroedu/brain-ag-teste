@@ -61,4 +61,6 @@ def test_dashboard_api_view_extreme_data(client, create_farmers, create_crop_typ
     assert response.status_code == HTTP_200_OK
     assert response.data['farm_count'] == 1000
     assert response.data['total_area_hectares'] == sum([10000 * i for i in range(1000)])
+    assert response.data['soil_usage']['total_arable_area_hectares'] == sum([5000 * i for i in range(1000)])
+    assert response.data['soil_usage']['total_vegetation_area_hectares'] == sum([5000 * i for i in range(1000)])
     assert len(response.data['farm_count_by_crop']) == 1
