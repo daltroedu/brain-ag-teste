@@ -17,7 +17,7 @@ def test_farm_list(client, create_farms):
     url = reverse('farm-list')
     response = client.get(url)
     assert response.status_code == HTTP_200_OK
-    assert len(response.data['results']) == 2
+    assert len(response.data['results']) == len(create_farms)
 
 @pytest.mark.django_db
 def test_farm_create(client, create_farmers, create_farms):
@@ -34,7 +34,7 @@ def test_farm_create(client, create_farmers, create_farms):
     }
     response = client.post(url, data, format='json')
     assert response.status_code == HTTP_201_CREATED
-    assert Farm.objects.count() == 3
+    assert Farm.objects.count() == len(create_farms) + 1
 
 @pytest.mark.django_db
 def test_farm_update(client, create_farms):
@@ -65,7 +65,8 @@ def test_farm_delete(client, create_farms):
     url = reverse('farm-detail', kwargs={'pk': farm.pk})
     response = client.delete(url)
     assert response.status_code == HTTP_204_NO_CONTENT
-    assert Farm.objects.count() == 1
+    assert Farm.objects.count() == len(create_farms) - 1
+    assert not Farm.objects.filter(pk=farm.pk).exists()
 
 @pytest.mark.django_db
 def test_farm_retrieve(client, create_farms):
@@ -78,7 +79,7 @@ def test_farm_retrieve(client, create_farms):
 
 # Negative cases
 @pytest.mark.django_db
-def test_farm_create_with_invalid_state_and_total_area_hectares(client, create_farmers):
+def test_farm_create_with_invalid_state_and_numeric_values(client, create_farmers):
     farmer = create_farmers[0]
     url = reverse('farm-list')
     data = {
@@ -86,9 +87,9 @@ def test_farm_create_with_invalid_state_and_total_area_hectares(client, create_f
         'farmer_id': farmer.id,
         'city': 'Cidade XYZ',
         'state': 'XX',
-        'total_area_hectares': 50,
-        'arable_area_hectares': 30,
-        'vegetation_area_hectares': 30,
+        'total_area_hectares': -50,
+        'arable_area_hectares': -30,
+        'vegetation_area_hectares': -30,
     }
     response = client.post(url, data, format='json')
     assert response.status_code == HTTP_400_BAD_REQUEST
