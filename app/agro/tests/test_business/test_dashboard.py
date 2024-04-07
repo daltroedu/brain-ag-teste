@@ -1,7 +1,8 @@
 import pytest
+
 from agro.business.dashboard import get_dashboard_data
-from agro.models import Crop, Farm
 from agro.constants import STATE_CHOICES
+from agro.models import Crop, Farm
 
 
 # Positive cases

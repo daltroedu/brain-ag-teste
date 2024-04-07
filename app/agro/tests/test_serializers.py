@@ -1,12 +1,13 @@
 import pytest
 from rest_framework.exceptions import ValidationError
+
+from ..models import Crop, Farm
 from ..serializers import (
+    CropSerializer,
+    CropTypeSerializer,
     FarmerSerializer,
     FarmSerializer,
-    CropTypeSerializer,
-    CropSerializer,
 )
-from ..models import Farm, Crop
 
 
 @pytest.mark.django_db

@@ -1,4 +1,4 @@
-from validate_docbr import CPF, CNPJ
+from validate_docbr import CNPJ, CPF
 
 
 def validate_cpf_cnpj(value):

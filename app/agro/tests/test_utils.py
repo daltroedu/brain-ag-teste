@@ -1,4 +1,5 @@
 import pytest
+
 from agro.utils import validate_cpf_cnpj
 
 

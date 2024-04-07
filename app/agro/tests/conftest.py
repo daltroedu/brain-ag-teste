@@ -1,5 +1,6 @@
 import pytest
-from agro.models import Farmer, Farm, CropType
+
+from agro.models import CropType, Farm, Farmer
 
 
 @pytest.fixture

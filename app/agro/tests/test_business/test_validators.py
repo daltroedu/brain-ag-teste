@@ -1,4 +1,5 @@
 import pytest
+
 from agro.business.validators import validate_total_area
 
 

@@ -1,8 +1,9 @@
 from django.db import IntegrityError
 from rest_framework import serializers
-from .models import Farmer, Farm, CropType, Crop
-from .constants import STATE_CHOICES
+
 from .business.validators import validate_total_area
+from .constants import STATE_CHOICES
+from .models import Crop, CropType, Farm, Farmer
 from .utils import validate_cpf_cnpj
 
 

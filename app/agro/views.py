@@ -1,16 +1,18 @@
 import logging
-from rest_framework import viewsets, status
-from rest_framework.views import APIView
+
+from rest_framework import status, viewsets
 from rest_framework.response import Response
-from .models import Farmer, Farm, CropType, Crop
+from rest_framework.views import APIView
+
+from .business.dashboard import get_dashboard_data
+from .models import Crop, CropType, Farm, Farmer
+from .pagination import StandardResultsSetPagination
 from .serializers import (
+    CropSerializer,
+    CropTypeSerializer,
     FarmerSerializer,
     FarmSerializer,
-    CropTypeSerializer,
-    CropSerializer,
 )
-from .pagination import StandardResultsSetPagination
-from .business.dashboard import get_dashboard_data
 
 logger = logging.getLogger(__name__)
 
