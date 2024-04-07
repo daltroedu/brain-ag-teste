@@ -34,6 +34,7 @@ def test_crop_create(client, create_farms, create_crop_types):
     response = client.post(url, data, format='json')
     assert response.status_code == HTTP_201_CREATED
     assert Crop.objects.count() == 1
+    assert Crop.objects.filter(farm=farm, crop_type=crop_type).exists()
 
 @pytest.mark.django_db
 def test_crop_update(client, create_farms, create_crop_types):
@@ -57,6 +58,7 @@ def test_crop_delete(client, create_farms, create_crop_types):
     response = client.delete(url)
     assert response.status_code == HTTP_204_NO_CONTENT
     assert Crop.objects.count() == 0
+    assert not Crop.objects.filter(id=crop.id).exists()
 
 @pytest.mark.django_db
 def test_crop_retrieve(client, create_farms, create_crop_types):
