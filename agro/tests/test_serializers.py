@@ -71,19 +71,20 @@ def test_farm_serializer_state_validation():
     assert 'state' in serializer.errors
 
 @pytest.mark.django_db
-def test_farm_serializer_negative_values(create_farmers):
+def test_farm_serializer_incorret_numerics_values(create_farmers):
     farmer = create_farmers[0]
     invalid_data = {
         'farmer_id': farmer.id,
         'name': 'Fazenda BA',
         'city': 'Juazeiro',
         'state': 'BA',
-        'total_area_hectares': -100,
+        'total_area_hectares': 0,
         'arable_area_hectares': -50.0,
         'vegetation_area_hectares': -30.0,
     }
     serializer = FarmSerializer(data=invalid_data)
     assert not serializer.is_valid()
+    assert 'total_area_hectares' in serializer.errors
 
 @pytest.mark.django_db
 def test_crop_type_serializer_serialization(create_crop_types):
@@ -105,7 +106,6 @@ def test_crop_type_serializer_validation(create_crop_types):
     invalid_data = {"name": existing_crop_type.name}
     serializer = CropTypeSerializer(data=invalid_data)
     assert not serializer.is_valid()
-
 
 @pytest.mark.django_db
 def test_crop_serializer_serialization(create_farms, create_crop_types):
