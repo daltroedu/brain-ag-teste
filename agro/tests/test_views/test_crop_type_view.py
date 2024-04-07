@@ -16,7 +16,7 @@ def test_croptype_list(client, create_crop_types):
     url = reverse('croptype-list')
     response = client.get(url)
     assert response.status_code == HTTP_200_OK
-    assert len(response.data) == 2
+    assert len(response.data) == len(create_crop_types)
 
 @pytest.mark.django_db
 def test_croptype_create(client):
