@@ -10,3 +10,14 @@ services:
       - 8009:8000
     env_file:
       - ./app/.env.dev
+  brain-ag-teste-db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=brainag
+      - POSTGRES_PASSWORD=brainag
+      - POSTGRES_DB=brainag_dev
+
+volumes:
+  postgres_data:
