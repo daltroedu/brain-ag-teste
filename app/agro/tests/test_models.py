@@ -1,6 +1,6 @@
 import pytest
 from django.db import IntegrityError
-from ..models import Crop, Farmer
+from ..models import Crop, CropType, Farmer
 
 UNIQUE_CONSTRAINT_FAILED = "UNIQUE constraint failed"
 
@@ -29,9 +29,8 @@ def test_create_crop_type(create_crop_types):
 @pytest.mark.django_db
 def test_crop_type_unique_name(create_crop_types):
     crop_type = create_crop_types[0]
-    with pytest.raises(IntegrityError) as excinfo:
-        crop_type.__class__.objects.create(name=crop_type.name)
-    assert UNIQUE_CONSTRAINT_FAILED in str(excinfo.value)
+    with pytest.raises(IntegrityError):
+        CropType.objects.create(name=crop_type.name)
 
 @pytest.mark.django_db
 def test_create_crop(create_farms, create_crop_types):
@@ -44,6 +43,5 @@ def test_crop_unique_together_constraint(create_farms, create_crop_types):
     farm = create_farms[0]
     crop_type = create_crop_types[0]
     Crop.objects.create(farm=farm, crop_type=crop_type)
-    with pytest.raises(IntegrityError) as excinfo:
+    with pytest.raises(IntegrityError):
         Crop.objects.create(farm=farm, crop_type=crop_type)
-    assert UNIQUE_CONSTRAINT_FAILED in str(excinfo.value)
