@@ -17,7 +17,7 @@ def test_farmer_list(client, create_farmers):
     url = reverse('farmer-list')
     response = client.get(url)
     assert response.status_code == HTTP_200_OK
-    assert len(response.data['results']) == 2
+    assert len(response.data['results']) == len(create_farmers)
 
 @pytest.mark.django_db
 def test_farmer_create(client):
@@ -26,6 +26,9 @@ def test_farmer_create(client):
     response = client.post(url, data, format='json')
     assert response.status_code == HTTP_201_CREATED
     assert Farmer.objects.count() == 1
+    new_farmer = Farmer.objects.latest('id')
+    assert new_farmer.name == 'João'
+    assert new_farmer.cpf_cnpj == '53545781089'
 
 @pytest.mark.django_db
 def test_farmer_update(client, create_farmers):
@@ -43,7 +46,8 @@ def test_farmer_delete(client, create_farmers):
     url = reverse('farmer-detail', kwargs={'pk': farmer.pk})
     response = client.delete(url)
     assert response.status_code == HTTP_204_NO_CONTENT
-    assert Farmer.objects.count() == 1
+    assert Farmer.objects.count() == len(create_farmers) - 1
+    assert not Farmer.objects.filter(pk=farmer.pk).exists()
 
 @pytest.mark.django_db
 def test_farmer_retrieve(client, create_farmers):
