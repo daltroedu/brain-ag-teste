@@ -1,6 +1,7 @@
+from pathlib import Path
+
 import environ
 from django.core.management.utils import get_random_secret_key
-from pathlib import Path
 
 env = environ.Env(
     # set casting, default value
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
