@@ -3,8 +3,6 @@ from django.db import IntegrityError
 
 from ..models import Crop, CropType, Farmer
 
-UNIQUE_CONSTRAINT_FAILED = "UNIQUE constraint failed"
-
 
 @pytest.mark.django_db
 def test_create_farmer(create_farmers):
