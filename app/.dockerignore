@@ -1,4 +1,7 @@
-env
+venv
 .dockerignore
 Dockerfile
-Dockerfile.prod
+.git
+.gitignore
+.pytest_cache
+.github
