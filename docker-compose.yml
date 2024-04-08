@@ -1,23 +1,29 @@
 version: '3.8'
 
 services:
-  brain-ag-teste:
-    build: ./app
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./app/:/usr/src/app/
-    ports:
-      - 8009:8000
-    env_file:
-      - ./app/.env.dev
-  brain-ag-teste-db:
-    image: postgres:15
+  brain-ag-db:
+    image: postgres:15-alpine
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=brainag
-      - POSTGRES_PASSWORD=brainag
-      - POSTGRES_DB=brainag_dev
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env.dev
+  brain-ag-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: always
+    volumes:
+      - .:/usr/src/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.dev
+    depends_on:
+      - brain-ag-db
 
 volumes:
   postgres_data:
