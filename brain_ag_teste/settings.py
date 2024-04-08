@@ -1,6 +1,5 @@
 import environ
-import os
-from django.brain_ag_teste.management.utils import get_random_secret_key
+from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 
 env = environ.Env(
@@ -12,21 +11,20 @@ env = environ.Env(
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Take environment variables from .env file
-environ.Env.read_env(BASE_DIR / '.env')
+environ.Env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get("SECRET_KEY", default=get_random_secret_key())
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY", default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.fly.dev']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "brain-ag-teste.fly.dev"]
 
-CSRF_TRUSTED_ORIGINS = ['https://*.fly.dev']
+CSRF_TRUSTED_ORIGINS = ["https://brain-ag-teste.fly.dev"]
 
 # Application definition
 
@@ -36,10 +34,11 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
-    'whitenoise.runserver_nostatic',
     "rest_framework",
     "agro",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -51,11 +50,15 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = []
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ROOT_URLCONF = "brain_ag_teste.urls"
 
@@ -81,19 +84,9 @@ WSGI_APPLICATION = "brain_ag_teste.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-#         "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-#         "USER": os.environ.get("SQL_USER", "postgres"),
-#         "PASSWORD": os.environ.get("SQL_PASSWORD", "postgres"),
-#         "HOST": os.environ.get("SQL_HOST", "localhost"),
-#         "PORT": os.environ.get("SQL_PORT", "5432"),
-#     }
-# }
 DATABASES = {
     # read os.environ['DATABASE_URL']
-    'default': env.db()  # <-- Updated!
+    "default": env.db(default="sqlite:///db.sqlite3"),
 }
 
 
@@ -143,3 +136,13 @@ REST_FRAMEWORK_PAGINATION = {
     "DEFAULT_PAGE_QUERY_PARAM": "page",
     "MAX_PAGE_SIZE": 100,
 }
+
+if not DEBUG:
+    REST_FRAMEWORK = {
+        "DEFAULT_THROTTLE_CLASSES": [
+            "rest_framework.throttling.AnonRateThrottle",
+        ],
+        "DEFAULT_THROTTLE_RATES": {
+            "anon": "50/minute",
+        },
+    }

@@ -1,7 +1,9 @@
-venv
-.dockerignore
-Dockerfile
-.git
-.gitignore
-.pytest_cache
-.github
+fly.toml
+.git/
+*.sqlite3
+.env
+.env.dev
+Dockerfile.dev
+docker-compose.yml
+entrypoint.sh
+requirements-dev.txt
