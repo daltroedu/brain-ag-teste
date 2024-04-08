@@ -21,4 +21,4 @@ COPY . .
 RUN adduser --disabled-password myuser
 USER myuser
 
-CMD gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn brain_ag_teste.wsgi:application --bind 0.0.0.0:$PORT

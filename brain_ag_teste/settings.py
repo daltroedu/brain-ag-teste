@@ -1,6 +1,6 @@
 import environ
 import os
-from django.core.management.utils import get_random_secret_key
+from django.brain_ag_teste.management.utils import get_random_secret_key
 from pathlib import Path
 
 env = environ.Env(
@@ -57,7 +57,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-ROOT_URLCONF = "core.urls"
+ROOT_URLCONF = "brain_ag_teste.urls"
 
 TEMPLATES = [
     {
@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "core.wsgi.application"
+WSGI_APPLICATION = "brain_ag_teste.wsgi.application"
 
 
 # Database
