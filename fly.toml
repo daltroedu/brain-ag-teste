@@ -9,8 +9,8 @@ console_command = '/code/manage.py shell'
 
 [build]
 
-[deploy]
-  release_command = 'python manage.py migrate --noinput'
+# [deploy]
+#  release_command = ''
 
 [env]
   PORT = '8000'
