@@ -50,7 +50,7 @@ class CropViewSet(viewsets.ModelViewSet):
             farm_id = crop.farm.id
             if farm_id not in farm_data:
                 farm_data[farm_id] = {
-                    "tttt_id": crop.id,
+                    "id": crop.id,
                     "farm": FarmSerializer(crop.farm).data,
                     "crops": [],
                 }
@@ -59,6 +59,20 @@ class CropViewSet(viewsets.ModelViewSet):
             )
         response_data = [value for value in farm_data.values()]
         return Response(response_data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        farm_id = instance.farm.id
+        queryset = self.queryset.filter(farm_id=farm_id)
+        farm_data = {
+            "id": instance.id,
+            "farm": FarmSerializer(instance.farm).data,
+            "crops": [
+                {"id": crop.crop_type.id, "name": crop.crop_type.name}
+                for crop in queryset
+            ],
+        }
+        return Response(farm_data)
 
 
 class DashboardAPIView(APIView):
