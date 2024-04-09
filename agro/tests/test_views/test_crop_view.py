@@ -75,8 +75,15 @@ def test_crop_retrieve(client, create_farms, create_crop_types):
     response = client.get(url)
     assert response.status_code == HTTP_200_OK
     assert response.data["farm"]["id"] == str(farm.id)
-    assert response.data["crop_type"]["id"] == crop_type.id
-
+    assert "crops" in response.data
+    assert isinstance(response.data["crops"], list)
+    found = False
+    for crop_data in response.data["crops"]:
+        if crop_data["id"] == crop_type.id:
+            found = True
+            assert crop_data["name"] == crop_type.name
+            break
+    assert found
 
 # Negative cases
 @pytest.mark.django_db
