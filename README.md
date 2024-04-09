@@ -31,7 +31,7 @@ Requisitos de instalação:
 
 Após instalar os requisitos:
 
-1. Clone este repositório: `git clone <>`
+1. Clone este repositório: `git clone https://github.com/daltroedu/brain-ag-teste`
 2. Acesse o projeto: `cd brain-ag-teste/`
 3. Utilizamos *Makefile* para simplificar a execução dos comandos, ao invés de:
     - ~~`docker-compose build`~~
