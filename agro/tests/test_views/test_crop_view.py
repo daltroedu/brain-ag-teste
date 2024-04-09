@@ -85,6 +85,7 @@ def test_crop_retrieve(client, create_farms, create_crop_types):
             break
     assert found
 
+
 # Negative cases
 @pytest.mark.django_db
 def test_crop_create_with_invalid_farm(client, create_crop_types):
