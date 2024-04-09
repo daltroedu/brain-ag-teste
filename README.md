@@ -34,10 +34,8 @@ Após instalar os requisitos:
 1. Clone este repositório: `git clone https://github.com/daltroedu/brain-ag-teste`
 2. Acesse o projeto: `cd brain-ag-teste/`
 3. Utilizamos *Makefile* para simplificar a execução dos comandos, ao invés de:
-    - ~~`docker-compose build`~~
-    apenas faça:
-    - `make build`
-    para construir os containers!
+    - ~~`docker-compose build`~~ apenas faça:
+    - `make build` para construir os containers!
 4. Build finalizado, suba a aplicação com `make up-d` (ou `make up`, caso queira acompanhar os logs no terminal)
 5. Agora você precisa efetuar as migrações para o banco de dados, faça: `make migrate`
 6. Execute os testes para ter certeza que tudo ocorreu bem: `make pytest`
@@ -65,7 +63,7 @@ Insira um [CPF](https://www.4devs.com.br/gerador_de_cpf)/[CNPJ](https://www.4dev
 
 Agora vamos criar uma fazenda, acesse: `http://localhost:8000/farms/`
 ![3_farm](docs/imgs/3_farm.png)
-**Observações:**
+Observações:
 - Um produtor rural (`farmer`) pode ter mais de uma fazenda (`farm`), mas não o contrário;
 - `total_area_hectares` precisa ser >= 0;
 - `arable_area_hectares` + `vegetation_area_hectares` não pode ser maior que `total_area_hectares`.
@@ -74,12 +72,13 @@ Visando controle sobre os tipos de cultura e normalização no banco de dados, v
 ![4_croptype](docs/imgs/4_croptype.png)
 
 Acesse `http://localhost:8000/crops/` para associar fazenda x cultura, sendo que uma fazenda pode ter mais de uma cultura:
-![5_crop](docs/imgs/5_crop.png)
+![5-1_crop](docs/imgs/5-1_crop.png)
+![5-2_crop](docs/imgs/5-2_crop.png)
 
-E para acessar o endpoint do dashboard: `http://localhost:8000/dashboard/`
+Enfim para acessar o endpoint do dashboard: `http://localhost:8000/dashboard/`
 ![6_dashboard](docs/imgs/6_dashboard.png)
 
-Caso precise editar ou excluir um produtor rural acesse http://localhost:8000/farmers/(id)/, válido também para os outros endpoints:
+Caso precise editar ou excluir um produtor rural acesse http://localhost:8000/farmers/(id)/ passando o id como parâmetro, válido também para os outros endpoints (exceto */dashboard*):
 ![7_editar_excluir](docs/imgs/7_editar_excluir.png)
 
 Sinta-se à vontade para testar a API também por outros meios, como Insomnia ou Postman:
