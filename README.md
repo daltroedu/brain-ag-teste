@@ -29,7 +29,7 @@ Requisitos de instalação:
 - [Docker](https://docs.docker.com/engine/install/)
 - [Docker Compose](https://docs.docker.com/compose/migrate/)
 
-Após instalar os requisitos:
+Após instalação/configuração dos requisitos:
 
 1. Clone este repositório: `git clone https://github.com/daltroedu/brain-ag-teste`
 2. Acesse o projeto: `cd brain-ag-teste/`
