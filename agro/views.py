@@ -30,24 +30,34 @@ class FarmViewSet(viewsets.ModelViewSet):
 
 
 class CropTypeViewSet(viewsets.ModelViewSet):
-    queryset = CropType.objects.all()
+    queryset = CropType.objects.order_by("id").all()
     serializer_class = CropTypeSerializer
 
 
 class CropViewSet(viewsets.ModelViewSet):
-    queryset = Crop.objects.select_related("crop_type", "farm", "farm__farmer").all()
+    queryset = (
+        Crop.objects.select_related("crop_type", "farm", "farm__farmer")
+        .order_by("-updated_at")
+        .all()
+    )
     serializer_class = CropSerializer
     pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        farms = {}
+        farm_data = {}
         for crop in queryset:
             farm_id = crop.farm.id
-            if farm_id not in farms:
-                farms[farm_id] = {"farm": FarmSerializer(crop.farm).data, "crops": []}
-            farms[farm_id]["crops"].append(CropTypeSerializer(crop.crop_type).data)
-        response_data = [value for value in farms.values()]
+            if farm_id not in farm_data:
+                farm_data[farm_id] = {
+                    "tttt_id": crop.id,
+                    "farm": FarmSerializer(crop.farm).data,
+                    "crops": [],
+                }
+            farm_data[farm_id]["crops"].append(
+                {"id": crop.crop_type.id, "name": crop.crop_type.name}
+            )
+        response_data = [value for value in farm_data.values()]
         return Response(response_data)
 
 
