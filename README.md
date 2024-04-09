@@ -8,9 +8,9 @@ API REST desenvolvida com Python, Django e Postgres. **Objetivo:** cadastrar, ed
 - Gráfico de pizza por uso de solo (área agricultável e vegetação):  `soil_usage`
 
 
-## Estrutura
+## Arquitetura da Aplicação
 
-Partes pertinentes da aplicação:
+Partes relevantes:
 
 - `agro/`: app que centraliza models, views, serializers, testes e regras de negócio;
 - `agro/business/dashboard.py`: agrega as operações para o principal endpoint já citado;
@@ -36,7 +36,7 @@ Após instalar os requisitos:
 3. Utilizamos *Makefile* para simplificar a execução dos comandos, ao invés de:
     - ~~`docker-compose build`~~ apenas faça:
     - `make build` para construir os containers!
-4. Build finalizado, suba a aplicação com `make up-d` (ou `make up`, caso queira acompanhar os logs no terminal)
+4. Build finalizado, suba a aplicação com `make up-d` (ou `make up`, caso queira acompanhar os logs no terminal). Mas antes certifique-se que as portas 8000 e 5432 (Django e Postgres) estão disponíveis
 5. Agora você precisa efetuar as migrações para o banco de dados, faça: `make migrate`
 6. Execute os testes para ter certeza que tudo ocorreu bem: `make pytest`
 ![pytest](docs/imgs/pytest.png)
@@ -52,6 +52,7 @@ Outros comandos:
 ## Endpoints
 
 **Link para testar a aplicação online: https://brain-ag-teste.fly.dev/**
+<small>OBS: limitado a 25 requisições/minuto, por questões de segurança e disponibilidade do servidor.</small>
 
 Para facilitar a utilização dos endpoints vamos trabalhar com a API navegável do Django REST Framework:
 ![1_api](docs/imgs/1_api.png)
