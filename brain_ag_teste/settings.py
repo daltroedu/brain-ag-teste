@@ -144,6 +144,6 @@ if not DEBUG:
             "rest_framework.throttling.AnonRateThrottle",
         ],
         "DEFAULT_THROTTLE_RATES": {
-            "anon": "50/minute",
+            "anon": "25/minute",
         },
     }
