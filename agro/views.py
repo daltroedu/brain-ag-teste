@@ -81,8 +81,8 @@ class DashboardAPIView(APIView):
             dashboard_data = get_dashboard_data()
             return Response(dashboard_data)
         except Exception as e:
-            logger.error(f"Erro ao recuperar dados do dashboard: {e}", exc_info=True)
+            logger.error(f"Error retrieving dashboard data: {e}", exc_info=True)
             return Response(
-                {"error": "Ocorreu um erro ao processar sua solicitação."},
+                {"error": "An error occurred while processing your request."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )

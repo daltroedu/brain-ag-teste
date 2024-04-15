@@ -15,7 +15,7 @@ class FarmerSerializer(serializers.ModelSerializer):
 
     def validate_cpf_cnpj(self, value):
         if not validate_cpf_cnpj(value):
-            raise serializers.ValidationError("Informe um CPF ou CNPJ válido.")
+            raise serializers.ValidationError("Enter a valid CPF or CNPJ.")
         cpf_cnpj_only_numbers = "".join(filter(str.isdigit, value))
         return cpf_cnpj_only_numbers
 
@@ -44,35 +44,35 @@ class FarmSerializer(serializers.ModelSerializer):
     def validate_state(self, value):
         if value not in dict(STATE_CHOICES).keys():
             raise serializers.ValidationError(
-                "Valor inválido para o estado. Por favor, defina um estado válido, ex.: SP"
+                "Invalid value for the state. Please set a valid state, e.g.: SP"
             )
         return value
 
     def validate_total_area_hectares(self, value):
         if value <= 0:
             raise serializers.ValidationError(
-                "A área total não pode ser negativa ou zero."
+                "The total area cannot be negative or zero."
             )
         return value
 
     def validate_arable_area_hectares(self, value):
         if value < 0:
             raise serializers.ValidationError(
-                "A área agricultável não pode ser negativa."
+                "The arable area cannot be negative."
             )
         return value
 
     def validate_vegetation_area_hectares(self, value):
         if value < 0:
             raise serializers.ValidationError(
-                "A área de vegetação não pode ser negativa."
+                "The vegetation area cannot be negative."
             )
         return value
 
     def validate(self, data):
         if not validate_total_area(data):
             raise serializers.ValidationError(
-                "A soma da área agricultável e de vegetação não pode exceder a área total da fazenda."
+                "The sum of the arable area and vegetation cannot exceed the total area of the farm."
             )
         return data
 
@@ -93,7 +93,7 @@ class CropSerializer(serializers.ModelSerializer):
         queryset=Farm.objects.all(), write_only=True, source="farm"
     )
     integrity_error_message = (
-        "Uma cultura com esta fazenda e tipo de cultura já existe."
+        "A crop with this farm and type of crop already exists."
     )
 
     class Meta:
