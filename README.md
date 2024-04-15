@@ -1,86 +1,92 @@
-# Brain AG Teste
+# Farm API
 
-API REST desenvolvida com Python, Django e Postgres. **Objetivo:** cadastrar, editar e exluir produtores rurais e disponibilizar um endpoint com dados para uso de dashboard, sendo estes em seu respectivo endpoint */dashboard*:
-- Total de fazendas em quantidade: `farm_count`
-- Total de fazendas em hectares (área total): `total_area_hectares`
-- Gráfico de pizza por estado: `count_by_state`
-- Gráfico de pizza por cultura: `farm_count_by_crop`
-- Gráfico de pizza por uso de solo (área agricultável e vegetação):  `soil_usage`
+[README em Português 🇧🇷](README_pt-br.md)
 
-
-## Arquitetura da Aplicação
-
-Partes relevantes:
-
-- `agro/`: app que centraliza models, views, serializers, testes e regras de negócio;
-- `agro/business/dashboard.py`: agrega as operações para o principal endpoint já citado;
-- `agro/business/validators.py`: lógica de validação sobre as áreas de uma fazenda;
-- `agro/models.py`: armazena todos os models, seus relacionamentos e configurações específicas;
-- `agro/serializers.py`: além de lidar com processos de serialização, implementa algumas validações de entrada também relacionadas com a regra de negócio;
-- `agro/views.py`: dispõe dos endpoints para criar, editar e excluir todas entidades de acordo com os models, além de um endpoint customizado para o dashboard;
-- `agro/tests/`: devido à grande cobertura de testes automatizados, a suíte de testes foi implementada em um pacote ao invés de um simples arquivo, facilitando a divisão por grupos, tipos e diferentes cenários de teste.
+REST API developed with Python, Django and Postgres. **Objective:** register, edit and delete farmers and provide an endpoint with data for dashboard use, these being in their respective endpoint */dashboard*:
+- Total farms in quantity: `farm_count`
+- Total farms in hectares (total area): `total_area_hectares`
+- Pie chart by state: `count_by_state`
+- Pie chart by crop: `farm_count_by_crop`
+- Pie chart by land use (arable area and vegetation): `soil_usage`
 
 
-## Configurações
+## Application Architecture
 
-Requisitos de instalação:
+Important points:
+
+- `agro/`: app that centralizes models, views, serializers, tests and business logic;
+- `agro/business/dashboard.py`: aggregates operations for the main endpoint already mentioned;
+- `agro/business/validators.py`: validation logic on the areas of a farm;
+- `agro/models.py`: stores all models, their relationships and specific configurations;
+- `agro/serializers.py`: in addition to dealing with serialization processes, it implements some input validations also related to the business logic;
+- `agro/views.py`: has endpoints to create, edit and delete all entities according to the models, in addition to a customized endpoint for the dashboard;
+- `agro/tests/`: due to the wide coverage of automated tests, the test suite was implemented in a package instead of a simple file, facilitating division into groups, types and different test scenarios.
+
+
+## Configurations
+
+Installation requirements:
 
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://docs.docker.com/engine/install/)
 - [Docker Compose](https://docs.docker.com/compose/migrate/)
 
-Após instalação/configuração dos requisitos:
+After installation/configuration of requirements:
 
-1. Clone este repositório: `git clone https://github.com/daltroedu/brain-ag-teste`
-2. Acesse o projeto: `cd brain-ag-teste/`
-3. Utilizamos *Makefile* para simplificar a execução dos comandos, ao invés de:
-    - ~~`docker-compose build`~~ apenas faça:
-    - `make build` para construir os containers!
-4. Build finalizado, suba a aplicação com `make up-d` (ou `make up`, caso queira acompanhar os logs no terminal). Mas antes certifique-se que as portas 8000 e 5432 (Django e Postgres) estão disponíveis
-5. Agora você precisa efetuar as migrações para o banco de dados, faça: `make migrate`
-6. Execute os testes para ter certeza que tudo ocorreu bem: `make pytest`
+1. Clone this repository: `git clone https://github.com/daltroedu/brain-ag-teste`
+2. Go to the project: `cd brain-ag-teste/`
+3. We use *Makefile* to simplify command execution, instead of:
+    - ~~`docker-compose build`~~ just do it:
+    - `make build` to build the containers!
+4. Build finished, upload the application with `make up-d` (or `make up`, if you want to follow the logs in the terminal). But first make sure that ports 8000 and 5432 (Django and Postgres) are available
+5. Now you need to perform the migrations to the database: `make migrate`
+6. Run the tests to make sure everything went well: `make pytest`
 ![pytest](docs/imgs/pytest.png)
-7. Sua aplicação está pronta! Acesse: http://localhost:8000/
-8. Para inserir alguns dados de exemplo no banco de dados, faça: `make loaddata-agro`
-9. E por fim, caso queira encerrar a aplicação/banco de dados: `make stop`
+7. Your application is ready! Visit: http://localhost:8000/
+8. To insert some example data into the database: `make loaddata-agro`
+9. And finally, if you want to close the application/database: `make stop`
 
-Outros comandos:
-- `make linting-check`: para verificar qualidade de código com flake8, isort e black;
-- `make linting-apply`: aplica as mudanças, se houverem.
+Other commands:
+- `make linting-check`: to check code quality with flake8, isort and black;
+- `make linting-apply`: applies the changes.
 
 
 ## Endpoints
 
-**Link para testar a aplicação online: https://brain-ag-teste.fly.dev/**
-<small>OBS: limitado a 25 requisições/minuto, por questões de segurança e disponibilidade do servidor.</small>
+**Link to test the application online: https://brain-ag-teste.fly.dev/**
 
-Para facilitar a utilização dos endpoints vamos trabalhar com a API navegável do Django REST Framework:
+<sub>NOTE: limited to 25 requests/min, for security and server availability reasons.</sub>
+
+To facilitate the use of endpoints, we will work with the Django REST Framework navigable API:
 ![1_api](docs/imgs/1_api.png)
 
-Para criar um produtor rural, acesse: `http://localhost:8000/farmers/`
+To create a farmer, go to: `http://localhost:8000/farmers/`
 
-Insira um [CPF](https://www.4devs.com.br/gerador_de_cpf)/[CNPJ](https://www.4devs.com.br/gerador_de_cnpj) válido (com ou sem máscara) e um nome:
+Enter a valid [CPF](https://www.4devs.com.br/gerador_de_cpf) or [CNPJ](https://www.4devs.com.br/gerador_de_cnpj) (with or without a mask) and a name:
 ![2_farmer](docs/imgs/2_farmer.png)
+<sub>NOTE: CPF and CNPJ are unique identifiers for people and companies in Brazil, respectively.</sub>
 
-Agora vamos criar uma fazenda, acesse: `http://localhost:8000/farms/`
+Now let's create a farm, go to: `http://localhost:8000/farms/`
 ![3_farm](docs/imgs/3_farm.png)
-Observações:
-- Um produtor rural (`farmer`) pode ter mais de uma fazenda (`farm`), mas não o contrário;
-- `total_area_hectares` precisa ser >= 0;
-- `arable_area_hectares` + `vegetation_area_hectares` não pode ser maior que `total_area_hectares`.
+<sub>NOTE: Only states (provinces) in Brazil, [see a list of cities in Brazil here](https://pt.wikipedia.org/wiki/Lista_de_munic%C3%ADpios_do_Brasil).</sub>
 
-Visando controle sobre os tipos de cultura e normalização no banco de dados, você pode cadastrá-las no endpoint `http://localhost:8000/crops_type/`:
+Comments:
+- A `farmer` can have more than one `farm`, but not vice versa;
+- `total_area_hectares` must be >= 0;
+- `arable_area_hectares` + `vegetation_area_hectares` cannot be greater than `total_area_hectares`.
+
+To control the types of crops and normalization in the database, you can register them on the endpoint (eg.: Soy, Coffee, Corn, etc.) `http://localhost:8000/crops_type/`:
 ![4_croptype](docs/imgs/4_croptype.png)
 
-Acesse `http://localhost:8000/crops/` para associar fazenda x cultura, sendo que uma fazenda pode ter mais de uma cultura:
+Go to `http://localhost:8000/crops/` to associate farm x crop, and a farm can have more than one crop:
 ![5-1_crop](docs/imgs/5-1_crop.png)
 ![5-2_crop](docs/imgs/5-2_crop.png)
 
-Enfim para acessar o endpoint do dashboard: `http://localhost:8000/dashboard/`
+Finally, to get the dashboard endpoint: `http://localhost:8000/dashboard/`
 ![6_dashboard](docs/imgs/6_dashboard.png)
 
-Caso precise editar ou excluir um produtor rural acesse http://localhost:8000/farmers/(id)/ passando o id como parâmetro, válido também para os outros endpoints (exceto */dashboard*):
+If you need to edit or delete a farmer, go to http://localhost:8000/farmers/(id)/ using the id as a parameter, also valid for other endpoints (except */dashboard*):
 ![7_editar_excluir](docs/imgs/7_editar_excluir.png)
 
-Sinta-se à vontade para testar a API também por outros meios, como Insomnia ou Postman:
+Feel free to test the API through other means as well, such as Insomnia or Postman:
 ![8_insomnia](docs/imgs/8_insomnia.png)
